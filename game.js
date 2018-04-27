@@ -1,11 +1,13 @@
 import Board from "./board";
-import Player from "./player";
+
+import Computer from "./computer";
 
 export default class Game {
-  constructor() {
+  constructor(difficulty) {
     this.currentPlayer = "black";
     this.winner = undefined;
     this.board = new Board();
+    this.computer = new Computer(difficulty);
 
     this.deltas = [
       [0, 1],
@@ -29,6 +31,10 @@ export default class Game {
       alert(`${this.winner} is the winner`);
     }
     this.changePlayer();
+
+    if (this.currentPlayer === "red") {
+      this.makeMove(this.computer.chooseMove(this.board));
+    }
   }
 
   changePlayer() {

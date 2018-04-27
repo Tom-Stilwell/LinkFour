@@ -110,6 +110,46 @@ class Board {
 
 /***/ }),
 
+/***/ "./computer.js":
+/*!*********************!*\
+  !*** ./computer.js ***!
+  \*********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Computer; });
+class Computer {
+  constructor(difficulty) {
+    this.difficulty = difficulty;
+    this.deltas = [[0, 1], [0, -1], [1, 0], [-1, 0], [1, 1], [1, -1], [-1, 1], [-1, -1]];
+  }
+
+  constructTree() {}
+
+  searchTree() {}
+
+  chooseMove(board) {
+    let move;
+    switch (this.difficulty) {
+      case "EASY":
+        while (!move || board.cells[move[0]][move[1]]) {
+          move = [Math.floor(Math.random() * 6), Math.floor(Math.random() * 7)];
+        }
+        break;
+      case "MEDIUM":
+        break;
+      case "HARD":
+        break;
+    }
+
+    return move;
+  }
+}
+
+/***/ }),
+
 /***/ "./game-view.js":
 /*!**********************!*\
   !*** ./game-view.js ***!
@@ -211,16 +251,17 @@ class GameView {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Game; });
 /* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./board */ "./board.js");
-/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./player */ "./player.js");
-/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_player__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _computer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./computer */ "./computer.js");
+
 
 
 
 class Game {
-  constructor() {
+  constructor(difficulty) {
     this.currentPlayer = "black";
     this.winner = undefined;
     this.board = new _board__WEBPACK_IMPORTED_MODULE_0__["default"]();
+    this.computer = new _computer__WEBPACK_IMPORTED_MODULE_1__["default"](difficulty);
 
     this.deltas = [[0, 1], [0, -1], [1, 0], [-1, 0], [1, 1], [1, -1], [-1, 1], [-1, -1]];
   }
@@ -235,6 +276,10 @@ class Game {
       alert(`${this.winner} is the winner`);
     }
     this.changePlayer();
+
+    if (this.currentPlayer === "red") {
+      this.makeMove(this.computer.chooseMove(this.board));
+    }
   }
 
   changePlayer() {
@@ -289,8 +334,8 @@ class Game {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _game_view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game-view.js */ "./game-view.js");
-/* harmony import */ var _game_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./game.js */ "./game.js");
+/* harmony import */ var _game_view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game-view */ "./game-view.js");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./game */ "./game.js");
 
 
 
@@ -306,13 +351,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function initialRender() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const game = new _game_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
-    const gameView = new _game_view_js__WEBPACK_IMPORTED_MODULE_0__["default"](ctx, canvas.width - 100, canvas.height - 100, game);
+    const game = new _game__WEBPACK_IMPORTED_MODULE_1__["default"]("EASY");
+    const gameView = new _game_view__WEBPACK_IMPORTED_MODULE_0__["default"](ctx, canvas.width - 100, canvas.height - 100, game);
     gameView.drawBoard();
 
     document.addEventListener("click", event => gameView.circleFillInEvent(event));
     resetButton.addEventListener("click", () => {
-      gameView.resetCircles();
+      // gameView.resetCircles();
       gameView.drawBoard();
       game.reset();
     });
@@ -320,17 +365,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initialRender();
 });
-
-/***/ }),
-
-/***/ "./player.js":
-/*!*******************!*\
-  !*** ./player.js ***!
-  \*******************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
 
 /***/ })
 
