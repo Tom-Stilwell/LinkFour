@@ -1,4 +1,5 @@
 import GameView from "./game-view.js";
+import Game from "./game.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("game-canvas");
@@ -12,7 +13,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function initialRender() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const gameView = new GameView(ctx, canvas.width - 100, canvas.height - 100);
+    const game = new Game();
+    const gameView = new GameView(
+      ctx,
+      canvas.width - 100,
+      canvas.height - 100,
+      game
+    );
     gameView.drawBoard();
 
     document.addEventListener("click", event =>
@@ -21,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     resetButton.addEventListener("click", () => {
       gameView.resetCircles();
       gameView.drawBoard();
+      game.reset();
     });
   }
 
