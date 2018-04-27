@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function initialRender() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const game = new Game("EASY");
+    const game = new Game("MEDIUM");
     const gameView = new GameView(
       ctx,
       canvas.width - 100,

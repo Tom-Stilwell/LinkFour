@@ -29,6 +29,7 @@ export default class Game {
     this.board.updateCell(pos, this.currentPlayer);
     if (this.isOver()) {
       alert(`${this.winner} is the winner`);
+      this.reset();
     }
     this.changePlayer();
 
